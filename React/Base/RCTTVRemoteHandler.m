@@ -28,61 +28,61 @@
 - (instancetype)initWithBridge:(RCTBridge *)bridge
 {
   RCTAssertParam(bridge);
-  
+
   if ((self = [super init])) {
     _eventDispatcher = [bridge moduleForClass:[RCTEventDispatcher class]];
-    
+
     self.tvRemoteGestureRecognizers = [NSMutableArray array];
-    
+
     // Recognizers for Apple TV remote buttons
-    
+
     // Play/Pause
     [self addTapGestureRecognizerWithSelector:@selector(playPausePressed:)
                                     pressType:UIPressTypePlayPause];
-    
+
     // Menu
-    [self addTapGestureRecognizerWithSelector:@selector(menuPressed:)
-                                    pressType:UIPressTypeMenu];
-    
+    // [self addTapGestureRecognizerWithSelector:@selector(menuPressed:)
+                                    // pressType:UIPressTypeMenu];
+
     // Select
     [self addTapGestureRecognizerWithSelector:@selector(selectPressed:)
                                     pressType:UIPressTypeSelect];
-    
+
     // Up
     [self addTapGestureRecognizerWithSelector:@selector(swipedUp:)
                                     pressType:UIPressTypeUpArrow];
-    
+
     // Down
     [self addTapGestureRecognizerWithSelector:@selector(swipedDown:)
                                     pressType:UIPressTypeDownArrow];
-    
+
     // Left
     [self addTapGestureRecognizerWithSelector:@selector(swipedLeft:)
                                     pressType:UIPressTypeLeftArrow];
-    
+
     // Right
     [self addTapGestureRecognizerWithSelector:@selector(swipedRight:)
                                     pressType:UIPressTypeRightArrow];
-    
-    
+
+
     // Recognizers for Apple TV remote trackpad swipes
-    
+
     // Up
     [self addSwipeGestureRecognizerWithSelector:@selector(swipedUp:)
                                       direction:UISwipeGestureRecognizerDirectionUp];
-    
+
     // Down
     [self addSwipeGestureRecognizerWithSelector:@selector(swipedDown:)
                                       direction:UISwipeGestureRecognizerDirectionDown];
-    
+
     // Left
     [self addSwipeGestureRecognizerWithSelector:@selector(swipedLeft:)
                                       direction:UISwipeGestureRecognizerDirectionLeft];
-    
+
     // Right
     [self addSwipeGestureRecognizerWithSelector:@selector(swipedRight:)
                                       direction:UISwipeGestureRecognizerDirectionRight];
-    
+
   }
 
   return self;
@@ -95,9 +95,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
   [self sendAppleTVEvent:@"playPause" toView:r.view];
 }
 
-- (void)menuPressed:(UIGestureRecognizer*)r {
-  [self sendAppleTVEvent:@"menu" toView:r.view];
-}
+// - (void)menuPressed:(UIGestureRecognizer*)r {
+  // [self sendAppleTVEvent:@"menu" toView:r.view];
+// }
 
 - (void)selectPressed:(UIGestureRecognizer*)r {
   [self sendAppleTVEvent:@"select" toView:r.view];
@@ -126,20 +126,20 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
 #pragma mark -
 
 - (void)addTapGestureRecognizerWithSelector:(nonnull SEL)selector pressType:(UIPressType)pressType {
-  
+
   UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:selector];
   recognizer.allowedPressTypes = @[[NSNumber numberWithInteger:pressType]];
-  
-  
+
+
   NSMutableArray *gestureRecognizers = (NSMutableArray*)self.tvRemoteGestureRecognizers;
   [gestureRecognizers addObject:recognizer];
 }
 
 - (void)addSwipeGestureRecognizerWithSelector:(nonnull SEL)selector direction:(UISwipeGestureRecognizerDirection)direction {
-  
+
   UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:selector];
   recognizer.direction = direction;
-  
+
   NSMutableArray *gestureRecognizers = (NSMutableArray*)self.tvRemoteGestureRecognizers;
   [gestureRecognizers addObject:recognizer];
 }
